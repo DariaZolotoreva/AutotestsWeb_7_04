@@ -1,14 +1,16 @@
 let page;
 
+beforeEach(async () => {
+  page = await browser.newPage();
+});
+
+afterEach(() => {
+  page.close();
+});
+
 describe("Github page tests", () => {
-
   beforeEach(async () => {
-    page = await browser.newPage();
     await page.goto("https://github.com/team");
-  });
-
-  afterEach(() => {
-    page.close();
   });
 
   test("The h1 header content'", async () => {
@@ -19,14 +21,12 @@ describe("Github page tests", () => {
     expect(title2).toEqual(
       "GitHub for teams · Build like the best teams on the planet · GitHub"
     );
-    await page.setDefaultNavigationTimeout(500);
-  });
+  }, 50000);
 
   test("The first link attribute", async () => {
     const actual = await page.$eval("a", (link) => link.getAttribute("href"));
     expect(actual).toEqual("#start-of-content");
-    await page.setDefaultNavigationTimeout(500);
-  });
+  }, 5000);
 
   test("The page contains Sign in button", async () => {
     const btnSelector = ".btn-large-mktg.btn-mktg";
@@ -35,66 +35,46 @@ describe("Github page tests", () => {
     });
     const actual = await page.$eval(btnSelector, (link) => link.textContent);
     expect(actual).toContain("Get started with Team");
-    await page.setDefaultNavigationTimeout(500);
   });
-});
+}, 10000);
 
 describe("Github header test page Actions", () => {
   beforeEach(async () => {
-    page1 = await browser.newPage();
-    await page1.goto("https://github.com/features/actions");
-  })
-  
-  afterEach(() => {
-    page1.close();
-  })
+    await page.goto("https://github.com/features/actions");
+  });
 
   test("The h1 header content'", async () => {
-    const firstLink = await page1.$("header div div a");
-    await page1.waitForSelector('h1');
-    const title2 = await page1.title();
-    expect(title2).toEqual('Features • GitHub Actions · GitHub');
-    await page.setDefaultNavigationTimeout(500);
-  })
-});
+    const firstLink = await page.$("header div div a");
+    await page.waitForSelector("h1");
+    const title2 = await page.title();
+    expect(title2).toEqual("Features • GitHub Actions · GitHub");
+  });
+}, 15000);
 
 describe("Github header test page Marketplace", () => {
   beforeEach(async () => {
-    page1 = await browser.newPage();
-    await page1.goto("https://github.com/marketplace");
-  })
-  
-  afterEach(() => {
-    page1.close();
-  })
+    await page.goto("https://github.com/marketplace");
+  });
 
   test("The h1 header content'", async () => {
-    const firstLink = await page1.$("h1 mb-2 lh-condensed-ultra");
-    await page1.waitForSelector('h1');
-    const title2 = await page1.title();
-    expect(title2).toEqual('GitHub Marketplace · to improve your workflow · GitHub');
-    await page.setDefaultNavigationTimeout(500);
-  })
-  
+    const firstLink = await page.$("h1 mb-2 lh-condensed-ultra");
+    await page.waitForSelector("h1");
+    const title2 = await page.title();
+    expect(title2).toEqual(
+      "GitHub Marketplace · to improve your workflow · GitHub"
+    );
+  }, 50000);
 });
 
 describe("Github header test page Pulls", () => {
   beforeEach(async () => {
-    page1 = await browser.newPage();
-    await page1.goto("https://github.com/pulls");
-  })
-  
-  afterEach(() => {
-    page1.close();
-  })
+    await page.goto("https://github.com/pulls");
+  });
 
   test("The h1 header content'", async () => {
-    const firstLink = await page1.$("AppHeader-context-item-label");
-    await page1.waitForSelector('h1');
-    const title2 = await page1.title();
-    expect(title2).toEqual('Page not found · GitHub · GitHub');
-    await page.setDefaultNavigationTimeout(500);
-  }) 
+    const firstLink = await page.$("AppHeader-context-item-label");
+    await page.waitForSelector("h1");
+    const title2 = await page.title();
+    expect(title2).toEqual("Page not found · GitHub · GitHub");
+  }, 50000);
 });
-
-
